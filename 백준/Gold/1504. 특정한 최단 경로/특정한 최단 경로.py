@@ -1,8 +1,11 @@
+# 다른 사람 코드 보고 다익스트라 개선
+
 import sys
 import heapq
 from math import inf
 
 input = sys.stdin.readline
+
 
 n, e = map(int, input().split())
 graph = [[] for _ in range(n+1)]
@@ -16,7 +19,6 @@ stopover1, stopover2 = map(int, input().split())
 
 def dijkstra(start):
     dist = [inf] * (n+1)
-    visited = [False] * (n+1)
     hq = []
     
     dist[start] = 0
@@ -25,13 +27,12 @@ def dijkstra(start):
     while hq:
         weight, curr = heapq.heappop(hq)
         
-        if visited[curr]: continue
-        
-        visited[curr] = True
+        if dist[curr] < weight:
+            continue
         
         for nxt, n_weight in graph[curr]:
-            if not visited[nxt]:
-                dist[nxt] = min(dist[nxt], weight + n_weight)
+            if weight + n_weight < dist[nxt]:
+                dist[nxt] = weight + n_weight
                 heapq.heappush(hq, (dist[nxt], nxt))
                 
     return dist
