@@ -25,31 +25,38 @@ def updatePaper(x, y, size, toggle):
         for j in range(y, y+size):
             paper[i][j] = toggle
 
+def find_next(x, y):
+    for j in range(y, n):
+        if paper[x][j] == 1:
+            return x, j
+    
+    for i in range(x+1, n):
+        for j in range(n):
+            if paper[i][j] == 1:
+                return i, j
+    
+    return -1, -1
 
-def bt(pos, cnt):
+def bt(x, y, cnt):
     global n, ans
     if cnt >= ans:
         return
     
-    for x in range(pos, n*n):
-        i, j = x // 10, x % 10
-        if paper[i][j] == 1:
-            for paper_size in range(5, 0, -1):
-                if left_paper[paper_size] > 0 and canAttach(i, j, paper_size):
-                    # attach
-                    updatePaper(i, j, paper_size, 0)
-                    left_paper[paper_size] -= 1
-                    
-                    bt(pos+1, cnt+1)
-                    
-                    # detach
-                    updatePaper(i, j, paper_size, 1)
-                    left_paper[paper_size] += 1
+    nx, ny = find_next(x, y)
+    if nx == -1:
+        ans = min(ans, cnt)
+    
+    for paper_size in range(5, 0, -1):
+        if left_paper[paper_size] > 0 and canAttach(nx, ny, paper_size):
+            # attach
+            updatePaper(nx, ny, paper_size, 0)
+            left_paper[paper_size] -= 1
             
-            return
+            bt(nx, ny, cnt+1)
             
-    ans = min(ans, cnt)
+            # detach
+            updatePaper(nx, ny, paper_size, 1)
+            left_paper[paper_size] += 1
 
-            
-bt(0, 0)
+bt(0, 0, 0)
 print(ans if ans != 100 else -1)
