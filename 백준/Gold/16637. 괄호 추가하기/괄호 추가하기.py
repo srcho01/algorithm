@@ -7,21 +7,23 @@ n = int(input())
 formula = input().rstrip()
 ans = -inf
 
-def operate(a, b, op):
+def calculate(a, op, b):
     return eval(f"{a}{op}{b}")
 
-def dfs(pos, curr):
-    global ans, n
+def bt(idx, curr):
+    global ans
     
-    if pos > n-2:
+    if idx >= n:
         ans = max(ans, curr)
         return
     
-    dfs(pos+2, operate(curr, formula[pos+1], formula[pos]))
+    # 괄호 치지 않음
+    bt(idx+2, calculate(curr, formula[idx], formula[idx+1]))
     
-    if pos + 3 < n:
-        parenthesis = operate(formula[pos+1], formula[pos+3], formula[pos+2])
-        dfs(pos+4, operate(curr, parenthesis, formula[pos]))
-
-dfs(1, int(formula[0]))
+    # 괄호 침
+    if idx + 3 < n:
+        in_parentheses = calculate(formula[idx+1], formula[idx+2], formula[idx+3])
+        bt(idx+4, calculate(curr, formula[idx], in_parentheses))
+        
+bt(1, int(formula[0]))
 print(ans)
