@@ -9,7 +9,6 @@ public class Solution {
 
     static int time;
     static int numBC;
-    static int[][] map = new int[10][10];
     static int[] moveA;
     static int[] moveB;
     static int[][] charger;
