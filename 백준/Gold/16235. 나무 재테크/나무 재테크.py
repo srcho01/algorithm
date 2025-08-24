@@ -11,9 +11,7 @@ for _ in range(m):
     x, y, z = map(int, input().split())
     trees[(x-1, y-1)].append(z)
     
-def spring():
-    dead = defaultdict(list)
-    
+def spring_and_summer():
     for r, c in trees.keys():
         sqr = sorted(trees[(r, c)])
         survive = []
@@ -28,15 +26,14 @@ def spring():
             idx += 1
         
         trees[(r, c)] = survive
-        land[r][c] = food
-        dead[(r, c)] = sqr[idx:]
+        land[r][c] = food + _summer(sqr[idx:])
     
-    return dead
+def _summer(dead):
+    ret = 0
+    for d in dead:
+        ret += d // 2
     
-def summer(dead):
-    for r, c in dead.keys():
-        for dead_tree in dead[(r, c)]:
-            land[r][c] += dead_tree // 2
+    return ret
 
 def fall():
     global n
@@ -61,8 +58,7 @@ def winter():
             land[i][j] += A[i][j]
                 
 for _ in range(k):
-    dead = spring()
-    summer(dead)
+    spring_and_summer()
     fall()
     winter()
 
