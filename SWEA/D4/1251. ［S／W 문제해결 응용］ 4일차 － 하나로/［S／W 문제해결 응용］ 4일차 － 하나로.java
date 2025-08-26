@@ -1,3 +1,5 @@
+import org.w3c.dom.Node;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -60,55 +62,60 @@ public class Solution {
             }
         }
 
-        dist.sort(Comparator.comparing(x -> x.l));
+        dist.sort(Node::compareTo);
         return dist;
     }
-}
+    
+    static class Node implements Comparable<Node> {
+        int x, y;
+        double l;
 
-class Node {
-    int x, y;
-    double l;
-
-    public Node(int x, int y, double l) {
-        this.x = x;
-        this.y = y;
-        this.l = l;
-    }
-}
-
-class UnionFind {
-    int[] parent;
-
-    public UnionFind(int size) {
-        this.parent = new int[size];
-        for (int i = 0; i < size; i++) {
-            parent[i] = i;
-        }
-    }
-
-    public int find(int x) {
-        while (x != parent[x]) {
-            parent[x] = parent[parent[x]];
-            x = parent[x];
+        public Node(int x, int y, double l) {
+            this.x = x;
+            this.y = y;
+            this.l = l;
         }
 
-        return x;
+        @Override
+        public int compareTo(Node o) {
+            return Double.compare(this.l, o.l);
+        }
     }
+    
+    static class UnionFind {
+        int[] parent;
 
-    public boolean union(int u, int v) {
-        int uRoot = find(u);
-        int vRoot = find(v);
-
-        if (uRoot == vRoot) {
-            return false;
-        } else {
-            if (uRoot < vRoot) {
-                parent[vRoot] = uRoot;
-            } else {
-                parent[uRoot] = vRoot;
+        public UnionFind(int size) {
+            this.parent = new int[size];
+            for (int i = 0; i < size; i++) {
+                parent[i] = i;
             }
         }
 
-        return true;
+        public int find(int x) {
+            while (x != parent[x]) {
+                parent[x] = parent[parent[x]];
+                x = parent[x];
+            }
+
+            return x;
+        }
+
+        public boolean union(int u, int v) {
+            int uRoot = find(u);
+            int vRoot = find(v);
+
+            if (uRoot == vRoot) {
+                return false;
+            } else {
+                if (uRoot < vRoot) {
+                    parent[vRoot] = uRoot;
+                } else {
+                    parent[uRoot] = vRoot;
+                }
+            }
+
+            return true;
+        }
     }
 }
