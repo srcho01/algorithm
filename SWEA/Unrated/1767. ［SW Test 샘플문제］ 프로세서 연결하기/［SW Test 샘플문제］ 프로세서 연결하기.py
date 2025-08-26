@@ -20,9 +20,9 @@ def bt(idx, total, cnt):
     else:
         for d in range(4):
             if can_connect(x, y, d):
-                length = toggle(x, y, d, 1)
+                length = toggle(x, y, d, True)
                 bt(idx + 1, total + length, cnt + 1)
-                toggle(x, y, d, 0)
+                toggle(x, y, d, False)
             
             bt(idx + 1, total, cnt)
     
