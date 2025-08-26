@@ -1,10 +1,7 @@
-import org.w3c.dom.Node;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -65,7 +62,7 @@ public class Solution {
         dist.sort(Node::compareTo);
         return dist;
     }
-    
+
     static class Node implements Comparable<Node> {
         int x, y;
         double l;
@@ -81,7 +78,7 @@ public class Solution {
             return Double.compare(this.l, o.l);
         }
     }
-    
+
     static class UnionFind {
         int[] parent;
 
