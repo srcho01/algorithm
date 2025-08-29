@@ -1,8 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
 
@@ -36,41 +35,41 @@ public class Main {
     static void go() {
         int layer = Math.min(n, m) / 2;
         for (int l = 0; l < layer; l++) {
-            int loop = ((n - l*2) + (m - l*2)) * 2 - 4;
-            int shortR = r % loop;
-            for (int rr=0; rr<shortR; rr++) {
-                int save = arr[l][l];
-
-                // 왼쪽
-                for (int i=l+1; i<n-l; i++) {
-                    int tmp = arr[i][l];
-                    arr[i][l] = save;
-                    save = tmp;
-                }
-
-                // 아래
-                for (int j=l+1; j<m-l; j++) {
-                    int tmp = arr[n-1-l][j];
-                    arr[n-1-l][j] = save;
-                    save = tmp;
-                }
-
-                // 오른쪽
-                for (int i=n-l-2; i>=l; i--) {
-                    int tmp = arr[i][m-l-1];
-                    arr[i][m-l-1] = save;
-                    save = tmp;
-                }
-
-                // 위
-                for (int j=m-l-2; j>=l; j--) {
-                    int tmp = arr[l][j];
-                    arr[l][j] = save;
-                    save = tmp;
-                }
-
+            Deque<Integer> q = new ArrayDeque<>();
+            int a = l, b = l;
+            for (a = l; a < n-1-l; a++) {
+                q.offer(arr[a][b]);
+            }
+            for (b = l; b < m-1-l; b++) {
+                q.offer(arr[a][b]);
+            }
+            for (a = n-1-l; a>l; a--) {
+                q.offer(arr[a][b]);
+            }
+            for (b = m-1-l; b>l; b--) {
+                q.offer(arr[a][b]);
             }
 
+            int loop = ((n - l*2) + (m - l*2)) * 2 - 4;
+            int rotate = r % loop;
+            for (int rr=0; rr<rotate; rr++) {
+                q.offerFirst(q.pollLast());
+            }
+
+            a = l; b = l;
+            for (a = l; a < n-1-l; a++) {
+                arr[a][b] = q.poll();
+            }
+            for (b = l; b < m-1-l; b++) {
+                arr[a][b] = q.poll();
+            }
+            for (a = n-1-l; a>l; a--) {
+                arr[a][b] = q.poll();
+            }
+            for (b = m-1-l; b>l; b--) {
+                arr[a][b] = q.poll();
+            }
         }
     }
+
 }
