@@ -8,6 +8,9 @@ public class Main {
     static int n;
     static int[][] paper;
 
+    static int white = 0;
+    static int blue = 0;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
@@ -20,41 +23,24 @@ public class Main {
             }
         }
 
-        int[] ans = daq(0, 0, n);
-        System.out.println(ans[0] + "\n" + ans[1]);
+        dac(0, 0, n);
+        System.out.println(white + "\n" + blue);
     }
 
-    static int[] daq(int x, int y, int s) {
+    static void dac(int x, int y, int s) {
         int c = color(x, y, s);
-        int zero = 0, one = 0;
 
-        if (c != -1) {
-            if (c == 0) {
-                zero++;
-            } else {
-                one++;
-            }
+        if (c == 0) {
+            white++;
+        } else if (c == 1) {
+            blue++;
         } else {
-            int half = s/2;
-
-            int[] ret = daq(x, y, half);
-            zero +=  ret[0];
-            one += ret[1];
-
-            ret = daq(x, y+half, half);
-            zero +=  ret[0];
-            one += ret[1];
-
-            ret = daq(x+half, y, half);
-            zero +=  ret[0];
-            one += ret[1];
-
-            ret = daq(x+half, y+half, half);
-            zero +=  ret[0];
-            one += ret[1];
+            s /= 2;
+            dac(x, y, s);
+            dac(x, y+s, s);
+            dac(x+s, y, s);
+            dac(x+s, y+s, s);
         }
-
-        return new int[]{zero, one};
     }
 
     static int color(int x, int y, int s) {
