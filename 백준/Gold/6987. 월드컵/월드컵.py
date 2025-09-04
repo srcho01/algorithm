@@ -29,12 +29,8 @@ for _ in range(4):
         global flag
         
         if depth == 15:
-            for team in range(6):
-                if status[team] != result[team]:
-                    break
-            else:
+            if sorted(status) == sorted(result):
                 flag = 1
-            
             return
         
         a, b = games[depth]
