@@ -10,7 +10,6 @@ public class Solution {
     static int[][] film;
 
     static int[] medicine;
-    static int ans;
     static boolean finish;
 
     public static void main(String[] args) throws IOException {
@@ -100,17 +99,6 @@ public class Solution {
         }
 
         return true;
-    }
-
-    static int getMedicine() {
-        int cnt = 0;
-        for (int i=0; i<d; i++) {
-            if (medicine[i] != -1) {
-                cnt++;
-            }
-        }
-
-        return cnt;
     }
 
 }
