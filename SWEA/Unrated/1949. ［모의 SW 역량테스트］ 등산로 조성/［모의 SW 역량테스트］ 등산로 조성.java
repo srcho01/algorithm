@@ -45,7 +45,6 @@ public class Solution {
             for (int j=0; j<n; j++) {
                 if (map[i][j] == max) {
                     visited = new boolean[n][n];
-                    visited[i][j] = true;
                     ans = Math.max(ans, dfs(i, j, map[i][j], false));
                 }
             }
@@ -56,30 +55,26 @@ public class Solution {
 
     static int dfs(int x, int y, int h, boolean isCut) {
         int ret = 1;
-
+        
+        visited[x][y] = true;
         for (int[] d: direction) {
             int nx = x + d[0], ny = y + d[1];
-
             if (nx < 0 || nx >= n || ny < 0 || ny >= n) {
                 continue;
             }
 
             if (!visited[nx][ny]) {
                 if (h > map[nx][ny]) {
-                    visited[nx][ny] = true;
                     ret = Math.max(ret, dfs(nx, ny, map[nx][ny], isCut) + 1);
-                    visited[nx][ny] = false;
                 } else if (!isCut) {
-                    int cut = map[nx][ny] - h + 1;
-                    if (cut <= k) {
-                        visited[nx][ny] = true;
-                        ret = Math.max(ret, dfs(nx, ny, map[nx][ny]-cut, true) + 1);
-                        visited[nx][ny] = false;
+                    if (map[nx][ny] - h + 1 <= k) {
+                        ret = Math.max(ret, dfs(nx, ny, map[x][y]-1, true) + 1);
                     }
                 }
             }
         }
 
+        visited[x][y] = false;
         return ret;
     }
 }
