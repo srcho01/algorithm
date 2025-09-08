@@ -1,6 +1,4 @@
 def solution(info, edges):
-    answer = 1
-    
     n = len(info)
     graph = [[] for _ in range(n)]
     
@@ -8,7 +6,7 @@ def solution(info, edges):
         graph[u].append(v)
         graph[v].append(u)
     
-    
+    answer = 1
     visited = [False] * n
     visited[0] = True
     can_go_nodes = [False] * n
@@ -31,7 +29,7 @@ def solution(info, edges):
                 dfs(nxt, animal)
                 animal[info[nxt]] -= 1
                 visited[nxt] = False
-                
+        
         for nxt in graph[root]:
             if not visited[nxt]:
                 can_go_nodes[nxt] = False
