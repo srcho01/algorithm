@@ -20,16 +20,10 @@ public class Main {
         int[] dp = new int[k+1];
         Arrays.fill(dp, (int)1e8);
         dp[0] = 0;
-        for (int coin: coins) {
-            if (coin <= k) {
-                dp[coin] = 1;
-            }
-        }
-
         for (int price = 1; price <= k; price++) {
             for (int coin: coins) {
                 if (coin <= price) {
-                    dp[price] = Math.min(dp[price], dp[price-coin] + dp[coin]);
+                    dp[price] = Math.min(dp[price], dp[price-coin] + 1);
                 }
             }
         }
