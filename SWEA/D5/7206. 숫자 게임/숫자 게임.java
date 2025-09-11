@@ -10,7 +10,6 @@ public class Solution {
 
     static int n;
 
-    static int ans;
     static Map<Integer, Integer> cache = new HashMap<>();
     static Set<Integer> nextNums;
     static boolean[] isTouch;
@@ -20,10 +19,9 @@ public class Solution {
         int T = Integer.parseInt(br.readLine());
         for (int tc = 1; tc <= T; tc++) {
             n = Integer.parseInt(br.readLine());
-            ans = -1;
-
             System.out.println("#" + tc + " " + solve(n));
         }
+        System.out.println();
     }
 
     static int solve(int num) {
@@ -52,11 +50,10 @@ public class Solution {
     static void split(int idx, int between, int num) {
         if (idx == between) {
             if (anyTrue(isTouch)) {
-                int mul = 1;
-                int div = 1;
-                for (int i = 0; i < between; i++) {
+                int mul = 1, div = 1;
+                for (boolean touched: isTouch) {
                     div *= 10;
-                    if (isTouch[i]) {
+                    if (touched) {
                         mul *= num % div;
                         num /= div;
                         div = 1;
