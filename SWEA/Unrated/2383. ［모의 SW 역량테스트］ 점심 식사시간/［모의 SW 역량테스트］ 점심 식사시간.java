@@ -68,8 +68,6 @@ public class Solution {
             }
         }
 
-        arrivalTime1.sort(Comparator.naturalOrder());
-        arrivalTime2.sort(Comparator.naturalOrder());
         return Math.max(calEndTime(arrivalTime1, 0), calEndTime(arrivalTime2, 1));
     }
 
@@ -78,6 +76,8 @@ public class Solution {
     }
 
     static int calEndTime(List<Integer> arrivalTime, int s) {
+        arrivalTime.sort(Comparator.naturalOrder());
+        
         int endTime = 0;
         int stairTime = stair.get(s)[2];
         Queue<Integer> queue = new ArrayDeque<>();
