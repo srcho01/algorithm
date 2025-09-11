@@ -75,19 +75,19 @@ public class Solution {
         return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
     }
 
-    static int calEndTime(List<Integer> arrivalTime, int s) {
-        arrivalTime.sort(Comparator.naturalOrder());
-        
+    static int calEndTime(List<Integer> arrivals, int s) {
+        arrivals.sort(Comparator.naturalOrder());
+
         int endTime = 0;
-        int stairTime = stair.get(s)[2];
+        int goingDown = stair.get(s)[2];
         Queue<Integer> queue = new ArrayDeque<>();
-        for (int arrive: arrivalTime) {
+        for (int arrive: arrivals) {
             if (queue.size() < 3) {
-                queue.offer(arrive + 1 + stairTime);
+                queue.offer(arrive + 1 + goingDown);
             } else {
-                int getOut = queue.poll();
-                int waiting = Math.max(0, getOut - (arrive + 1));
-                queue.offer(arrive + 1 + waiting + stairTime);
+                int finished = queue.poll();
+                int wait = Math.max(0, finished - (arrive + 1));
+                queue.offer(arrive + 1 + wait + goingDown);
             }
         }
         while (!queue.isEmpty()) {
