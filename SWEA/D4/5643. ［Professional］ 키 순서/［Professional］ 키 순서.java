@@ -6,8 +6,7 @@ import java.util.*;
 public class Solution {
 
     static int n, m;
-    static int[][] graph;
-    static final int MAX = (int)1e8;
+    static boolean[][] graph;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -16,16 +15,12 @@ public class Solution {
             n = Integer.parseInt(br.readLine());
             m = Integer.parseInt(br.readLine());
 
-            graph = new int[n+1][n+1];
-            for (int[] line: graph) {
-                Arrays.fill(line, MAX);
-            }
-
+            graph = new boolean[n+1][n+1];
             for (int i = 0; i < m; i++) {
                 StringTokenizer st = new StringTokenizer(br.readLine());
                 int a = Integer.parseInt(st.nextToken());
                 int b = Integer.parseInt(st.nextToken());
-                graph[a][b] = 1;
+                graph[a][b] = true;
             }
 
             System.out.println("#" + tc + " " + solve());
@@ -37,22 +32,24 @@ public class Solution {
             for (int a = 1; a <= n; a++) {
                 for (int b = 1; b <= n; b++) {
                     if (a == b) continue;
-                    graph[a][b] = Math.min(graph[a][b], graph[a][k] + graph[k][b]);
+                    if (graph[a][k] && graph[k][b]) {
+                        graph[a][b] = true;
+                    }
                 }
             }
         }
 
         int ret = 0;
-        for (int i = 1; i <= n; i++) {
+        for (int student = 1; student <= n; student++) {
             int cnt = 0;
             for (int in = 1; in <= n; in++) {
-                if (i == in) continue;
-                if (graph[in][i] != MAX) cnt++;
+                if (student == in) continue;
+                if (graph[in][student]) cnt++;
             }
 
             for (int out = 1; out <= n; out++) {
-                if (i == out) continue;
-                if (graph[i][out] != MAX) cnt++;
+                if (student == out) continue;
+                if (graph[student][out]) cnt++;
             }
 
             if (cnt == n-1) ret++;
