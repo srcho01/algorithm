@@ -1,48 +1,20 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
-
-public class Solution {
-
-    static int n, k;
-    static int[][] things;
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int T = Integer.parseInt(br.readLine());
-        for (int tc = 1; tc <= T; tc++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            n = Integer.parseInt(st.nextToken());
-            k = Integer.parseInt(st.nextToken());
-
-            things = new int[n+1][2];
-            for (int i = 1; i <= n; i++) {
-                st = new StringTokenizer(br.readLine());
-                things[i][0] = Integer.parseInt(st.nextToken());
-                things[i][1] = Integer.parseInt(st.nextToken());
-            }
-
-            System.out.println("#" + tc + " " + solve());
-        }
-    }
-
-    static int solve() {
-        int[][] dp = new int[n+1][k+1];
-
-        for (int thing = 1; thing <= n; thing++) {
-            for (int bag = 1; bag <= k; bag++) {
-                int weight = things[thing][0];
-                int cost = things[thing][1];
-
-                dp[thing][bag] = dp[thing-1][bag];
-                if (bag - weight >= 0) {
-                    dp[thing][bag] = Math.max(dp[thing][bag], dp[thing-1][bag-weight] + cost);
-                }
-            }
-        }
-
-        return dp[n][k];
-    }
-}
+T = int(input())
+for tc in range(1, T+1):
+    n, k = map(int, input().split())
+    V = [0]
+    C = [0]
+    for _ in range(n):
+        v, c = map(int, input().split())
+        V.append(v)
+        C.append(c)
+        
+    dp = [[0] * (k+1) for _ in range(n+1)]
+    
+    for i in range(1, n+1):
+        for j in range(1, k+1):
+            if j - V[i] < 0:
+                dp[i][j] = dp[i-1][j]
+            else:
+                dp[i][j] = max(dp[i-1][j-V[i]] + C[i], dp[i-1][j])
+    
+    print(f"#{tc} {dp[n][k]}")
